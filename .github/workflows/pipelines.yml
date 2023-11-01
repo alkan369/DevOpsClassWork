@@ -35,7 +35,7 @@ jobs:
         run: echo "SHA=${{ github.sha }}" >> $GITHUB_ENV
 
       - name: Build and Tag Docker image
-        run: cd src/ && docker build -t ${{ secrets.DOCKER_USERNAME }}python-image:${{ env.SHA }} .
+        run: cd src/ && docker build -t ${{ secrets.DOCKER_USERNAME }}/python-image:${{ env.SHA }} .
 
       - name: Push Docker image
-        run: docker push ${{ secrets.DOCKER_USERNAME }}python-image:${{ env.SHA }}
+        run: docker push ${{ secrets.DOCKER_USERNAME }}/python-image:${{ env.SHA }}
