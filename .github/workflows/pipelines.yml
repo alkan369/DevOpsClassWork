@@ -35,8 +35,7 @@ jobs:
         run: echo "::set-output name=SHA::$(git log -1 --format='%h')"
 
       - name: Build and Tag Docker image
-        run: cd src/
-        run: docker build -t python-image:${{ steps.git_sha.outputs.SHA }} .
+        run: cd src/ && docker build -t python-image:${{ steps.git_sha.outputs.SHA }} .
 
       - name: Push Docker image
         run: docker push python-image:${{ steps.git_sha.outputs.SHA }}
