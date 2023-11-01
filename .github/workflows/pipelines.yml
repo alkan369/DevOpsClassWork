@@ -32,10 +32,10 @@ jobs:
 
       - name: Get Git Commit SHA
         id: git_sha
-        run: echo "::set-output name=SHA::$(git log -1 --format='%h')"
+        run: echo "SHA=${{ github.sha }}" >> $GITHUB_ENV
 
       - name: Build and Tag Docker image
-        run: cd src/ && docker build -t python-image:${{ steps.git_sha.outputs.SHA }} .
+        run: cd src/ && docker build -t python-image:${{ env.SHA }} .
 
       - name: Push Docker image
-        run: docker push python-image:${{ steps.git_sha.outputs.SHA }}
+        run: docker push python-image:${{ env.SHA }}
