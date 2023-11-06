@@ -2,6 +2,9 @@
 
 name: CI
 
+- name: Aqua Security Trivy
+  uses: aquasecurity/trivy-action@0.13.1
+            
 # Controls when the workflow will run
 on:
   # Triggers the workflow on push or pull request events but only for the "main" branch
@@ -18,7 +21,7 @@ jobs:
   # This workflow contains a single job called "build-image"
   build-image:
     # The type of runner that the job will run on
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
@@ -36,6 +39,16 @@ jobs:
 
       - name: Build and Tag Docker image
         run: cd src/ && docker build -t ${{ secrets.DOCKER_USERNAME }}/python-image:${{ env.SHA }} .
+
+       - name: Scan Docker image with Trivy
+        uses: aquasecurity/trivy-action@v0.13.1
+        with:
+          image-ref: ${{ secrets.DOCKER_USERNAME }}/python-image:${{ env.SHA }}
+          format: 'table'
+          exit-code: '1'
+          ignore-unfixed: true
+          vuln-type: 'os,library'
+          severity: 'CRITICAL,HIGH'
 
       - name: Push Docker image
         run: docker push ${{ secrets.DOCKER_USERNAME }}/python-image:${{ env.SHA }}
