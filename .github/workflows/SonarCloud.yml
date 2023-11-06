@@ -13,19 +13,13 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Set up Python
-        uses: actions/setup-python@v2
-        with:
-          python-version: '3.x'
-
-      - name: Install SonarCloud Scan
-        run: pip install --upgrade pip && pip install -q sonar-scanner
-
       - name: SonarCloud Scan
+        uses: sonarsource/sonarcloud-github-action@master
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          SONAR_TOKEN: ${{ secrets.SONARCLOUD_TOKEN }}
-        run: |
-          sonar-scanner \
-          -Dsonar.qualitygate.wait=true \
-          -Dsonar.python.bandit.reportPaths=bandit-report.json
+            GITHUB_TOKEN: ${{ secrets.GIT_TOKEN }}
+            SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        with:
+          args: >
+              -Dsonar.organization=${{ secrets.SONARCLOUD_ORG_TOKEN }}
+              -Dsonar.projectKey=DevOpsClassWork
+              -Dsonar.python.coverage.reportPaths=coverage.xml
