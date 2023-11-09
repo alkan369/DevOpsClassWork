@@ -12,7 +12,7 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Check Code Style
-        uses: pip install flake8 && cd src/ && flake8 app.py
+        run: pip install flake8 && cd src/ && flake8 app.py
     
   editor-config-check:
     runs-on: ubuntu-latest
