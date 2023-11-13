@@ -26,6 +26,10 @@ jobs:
       - name: Clone-Down
         uses: actions/checkout@v3
 
+      # Run Unit Tests
+      - name: Run unit Tests
+        run: python3 -m unittest src/app_test.py
+
       # Runs a single command using the runners shell
       - name: Login in DockerHub
         run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
